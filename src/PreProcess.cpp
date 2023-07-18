@@ -715,6 +715,7 @@ void PreProcess::run(const char *cfgFile, int readCfgMode)
         StringUtil str;
         string obsDirMain = popt.obsDir;
         string navDirMain = popt.navDir;
+        string orbclkDirMain = popt.orbDir;
         string ionDirMain = popt.ionDir;
         string ztdDirMain = popt.ztdDir;
 
@@ -781,10 +782,31 @@ void PreProcess::run(const char *cfgFile, int readCfgMode)
             {
                 char dir[MAXSTRPATH] = { '\0' };
                 char sep = (char)FILEPATHSEP;
-                sprintf(dir, "%s%c%s%c%s", navDirMain.c_str(), sep, sYyyy.c_str(), sep, sDoy.c_str());
+                sprintf(dir, "%s%c%s", navDirMain.c_str(), sep, sYyyy.c_str());
                 str.TrimSpace4Char(dir);
                 str.CutFilePathSep(dir);
                 strcpy(popt.navDir, dir);
+                string tmpDir = dir;
+                if (access(tmpDir.c_str(), 0) == -1)
+                {
+                    /* If the directory does not exist, creat it */
+#ifdef _WIN32   /* for Windows */
+                    string cmd = "mkdir " + tmpDir;
+#else           /* for Linux or Mac */
+                    string cmd = "mkdir -p " + tmpDir;
+#endif
+                    std::system(cmd.c_str());
+                }
+            }
+
+            if (fopt.getOrbClk)
+            {
+                char dir[MAXSTRPATH] = { '\0' };
+                char sep = (char)FILEPATHSEP;
+                sprintf(dir, "%s%c%s", orbclkDirMain.c_str(), sep, sYyyy.c_str());
+                str.TrimSpace4Char(dir);
+                str.CutFilePathSep(dir);
+                strcpy(popt.orbDir, dir);
                 string tmpDir = dir;
                 if (access(tmpDir.c_str(), 0) == -1)
                 {
@@ -803,7 +825,7 @@ void PreProcess::run(const char *cfgFile, int readCfgMode)
             {
                 char dir[MAXSTRPATH] = { '\0' };
                 char sep = (char)FILEPATHSEP;
-                sprintf(dir, "%s%c%s%c%s", ionDirMain.c_str(), sep, sYyyy.c_str(), sep, sDoy.c_str());
+                sprintf(dir, "%s%c%s", ionDirMain.c_str(), sep, sYyyy.c_str());
                 str.TrimSpace4Char(dir);
                 str.CutFilePathSep(dir);
                 strcpy(popt.ionDir, dir);

@@ -201,25 +201,9 @@ void FtpUtil::init()
 **/
 void FtpUtil::GetDailyObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -263,7 +247,7 @@ void FtpUtil::GetDailyObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
         /* get the file list */
         string suffix = "." + sYy + "d";
         vector<string> dFiles;
-        str.GetFilesAll(subDir, suffix, dFiles);
+        str.GetFilesAll(dir, suffix, dFiles);
         char sitName[MAXCHARS];
         for (int i = 0; i < dFiles.size(); i++)
         {
@@ -369,7 +353,7 @@ void FtpUtil::GetDailyObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 
                     char tmpFile[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                    sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                     string localFile = tmpFile;
                     if (access(dFile.c_str(), 0) == -1)
                     {
@@ -427,22 +411,6 @@ void FtpUtil::GetDailyObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetHourlyObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('hourly') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "hourly");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* compute day of year */
     TimeUtil tu;
     int yyyy, doy;
@@ -466,7 +434,7 @@ void FtpUtil::GetHourlyObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt
             string sHh = str.hh2str(fopt->hhObs[i]);
             char tmpDir[MAXSTRPATH] = { '\0' };
             char sep = (char)FILEPATHSEP;
-            sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+            sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
             string sHhDir = tmpDir;
             if (access(sHhDir.c_str(), 0) == -1)
             {
@@ -572,7 +540,7 @@ void FtpUtil::GetHourlyObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt
                     string sHh = str.hh2str(fopt->hhObs[i]);
                     char tmpDir[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                    sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                     string sHhDir = tmpDir;
                     if (access(sHhDir.c_str(), 0) == -1)
                     {
@@ -708,22 +676,6 @@ void FtpUtil::GetHourlyObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt
 **/
 void FtpUtil::GetHrObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('highrate') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "highrate");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* compute day of year */
     TimeUtil tu;
     int yyyy, doy;
@@ -747,7 +699,7 @@ void FtpUtil::GetHrObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
             string sHh = str.hh2str(fopt->hhObs[i]);
             char tmpDir[MAXSTRPATH] = { '\0' };
             char sep = (char)FILEPATHSEP;
-            sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+            sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
             string sHhDir = tmpDir;
             if (access(sHhDir.c_str(), 0) == -1)
             {
@@ -860,7 +812,7 @@ void FtpUtil::GetHrObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
                     string sHh = str.hh2str(fopt->hhObs[i]);
                     char tmpDir[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                    sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                     string sHhDir = tmpDir;
                     if (access(sHhDir.c_str(), 0) == -1)
                     {
@@ -1004,25 +956,9 @@ void FtpUtil::GetHrObsIgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetDailyObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -1066,7 +1002,7 @@ void FtpUtil::GetDailyObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fopt
         /* get the file list */
         string suffix = ".crx";
         vector<string> crxFiles;
-        str.GetFilesAll(subDir, suffix, crxFiles);
+        str.GetFilesAll(dir, suffix, crxFiles);
         char sitName[MAXCHARS];
         for (int i = 0; i < crxFiles.size(); i++)
         {
@@ -1160,7 +1096,7 @@ void FtpUtil::GetDailyObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fopt
                     string crxzFile;
                     char tmpFile[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                    sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                     string localFile = tmpFile;
                     if (access(dFile.c_str(), 0) == -1)
                     {
@@ -1229,22 +1165,6 @@ void FtpUtil::GetDailyObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fopt
 **/
 void FtpUtil::GetHourlyObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('hourly') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "hourly");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* compute day of year */
     TimeUtil tu;
     int yyyy, doy;
@@ -1268,7 +1188,7 @@ void FtpUtil::GetHourlyObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fop
             string sHh = str.hh2str(fopt->hhObs[i]);
             char tmpDir[MAXSTRPATH] = { '\0' };
             char sep = (char)FILEPATHSEP;
-            sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+            sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
             string sHhDir = tmpDir;
             if (access(sHhDir.c_str(), 0) == -1)
             {
@@ -1375,7 +1295,7 @@ void FtpUtil::GetHourlyObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fop
                     string sHh = str.hh2str(fopt->hhObs[i]);
                     char tmpDir[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                    sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                     string sHhDir = tmpDir;
                     if (access(sHhDir.c_str(), 0) == -1)
                     {
@@ -1509,22 +1429,6 @@ void FtpUtil::GetHourlyObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fop
 **/
 void FtpUtil::GetHrObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('highrate') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "highrate");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* compute day of year */
     TimeUtil tu;
     int yyyy, doy;
@@ -1548,7 +1452,7 @@ void FtpUtil::GetHrObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fopt)
             string sHh = str.hh2str(fopt->hhObs[i]);
             char tmpDir[MAXSTRPATH] = { '\0' };
             char sep = (char)FILEPATHSEP;
-            sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+            sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
             string sHhDir = tmpDir;
             if (access(sHhDir.c_str(), 0) == -1)
             {
@@ -1662,7 +1566,7 @@ void FtpUtil::GetHrObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fopt)
                     string sHh = str.hh2str(fopt->hhObs[i]);
                     char tmpDir[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                    sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                     string sHhDir = tmpDir;
                     if (access(sHhDir.c_str(), 0) == -1)
                     {
@@ -1807,25 +1711,9 @@ void FtpUtil::GetHrObsMgex(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetDailyObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -1869,7 +1757,7 @@ void FtpUtil::GetDailyObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
         /* get the file list */
         string suffix = ".crx";
         vector<string> crxFiles;
-        str.GetFilesAll(subDir, suffix, crxFiles);
+        str.GetFilesAll(dir, suffix, crxFiles);
         char sitName[MAXCHARS];
         for (int i = 0; i < crxFiles.size(); i++)
         {
@@ -1925,7 +1813,7 @@ void FtpUtil::GetDailyObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
         /* get the file list */
         suffix = "." + sYy + "d";
         vector<string> dFiles;
-        str.GetFilesAll(subDir, suffix, dFiles);
+        str.GetFilesAll(dir, suffix, dFiles);
         for (int i = 0; i < dFiles.size(); i++)
         {
             if (access(dFiles[i].c_str(), 0) == 0)
@@ -2029,7 +1917,7 @@ void FtpUtil::GetDailyObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 
                     char tmpFile[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                    sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                     string localFile = tmpFile;
                     if (access(dFile.c_str(), 0) == -1)
                     {
@@ -2144,22 +2032,6 @@ void FtpUtil::GetDailyObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetHourlyObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('hourly') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "hourly");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* compute day of year */
     TimeUtil tu;
     int yyyy, doy;
@@ -2182,7 +2054,7 @@ void FtpUtil::GetHourlyObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt
             string sHh = str.hh2str(fopt->hhObs[i]);
             char tmpDir[MAXSTRPATH] = { '\0' };
             char sep = (char)FILEPATHSEP;
-            sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+            sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
             string sHhDir = tmpDir;
             if (access(sHhDir.c_str(), 0) == -1)
             {
@@ -2355,7 +2227,7 @@ void FtpUtil::GetHourlyObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt
                     string sHh = str.hh2str(fopt->hhObs[i]);
                     char tmpDir[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                    sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                     string sHhDir = tmpDir;
                     if (access(sHhDir.c_str(), 0) == -1)
                     {
@@ -2537,22 +2409,6 @@ void FtpUtil::GetHourlyObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt
 **/
 void FtpUtil::GetHrObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('highrate') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "highrate");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* compute day of year */
     TimeUtil tu;
     int yyyy, doy;
@@ -2575,7 +2431,7 @@ void FtpUtil::GetHrObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
             string sHh = str.hh2str(fopt->hhObs[i]);
             char tmpDir[MAXSTRPATH] = { '\0' };
             char sep = (char)FILEPATHSEP;
-            sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+            sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
             string sHhDir = tmpDir;
             if (access(sHhDir.c_str(), 0) == -1)
             {
@@ -2751,7 +2607,7 @@ void FtpUtil::GetHrObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
                     string sHh = str.hh2str(fopt->hhObs[i]);
                     char tmpDir[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                    sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                     string sHhDir = tmpDir;
                     if (access(sHhDir.c_str(), 0) == -1)
                     {
@@ -2943,25 +2799,9 @@ void FtpUtil::GetHrObsIgm(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetDailyObsCut(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -3013,7 +2853,7 @@ void FtpUtil::GetDailyObsCut(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 
                 char tmpFile[MAXSTRPATH] = { '\0' };
                 char sep = (char)FILEPATHSEP;
-                sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                 string localFile = tmpFile;
                 if (access(crxFile.c_str(), 0) == -1)
                 {
@@ -3069,25 +2909,9 @@ void FtpUtil::GetDailyObsCut(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetDailyObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -3116,7 +2940,7 @@ void FtpUtil::GetDailyObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
         /* get the file list */
         string suffix = ".crx";
         vector<string> crxFiles;
-        str.GetFilesAll(subDir, suffix, crxFiles);
+        str.GetFilesAll(dir, suffix, crxFiles);
         char sitName[MAXCHARS];
         for (int i = 0; i < crxFiles.size(); i++)
         {
@@ -3196,7 +3020,7 @@ void FtpUtil::GetDailyObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 
                     char tmpFile[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                    sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                     string localFile = tmpFile;
                     if (access(dFile.c_str(), 0) == -1)
                     {
@@ -3253,22 +3077,6 @@ void FtpUtil::GetDailyObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetHourlyObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('hourly') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "hourly");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* compute day of year */
     TimeUtil tu;
     int yyyy, doy;
@@ -3290,7 +3098,7 @@ void FtpUtil::GetHourlyObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
             string sHh = str.hh2str(fopt->hhObs[i]);
             char tmpDir[MAXSTRPATH] = { '\0' };
             char sep = (char)FILEPATHSEP;
-            sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+            sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
             string sHhDir = tmpDir;
             if (access(sHhDir.c_str(), 0) == -1)
             {
@@ -3386,7 +3194,7 @@ void FtpUtil::GetHourlyObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
                     string sHh = str.hh2str(fopt->hhObs[i]);
                     char tmpDir[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                    sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                     string sHhDir = tmpDir;
                     if (access(sHhDir.c_str(), 0) == -1)
                     {
@@ -3496,22 +3304,6 @@ void FtpUtil::GetHourlyObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetHrObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('highrate') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "highrate");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* compute day of year */
     TimeUtil tu;
     int yyyy, doy;
@@ -3533,7 +3325,7 @@ void FtpUtil::GetHrObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
             string sHh = str.hh2str(fopt->hhObs[i]);
             char tmpDir[MAXSTRPATH] = { '\0' };
             char sep = (char)FILEPATHSEP;
-            sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+            sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
             string sHhDir = tmpDir;
             if (access(sHhDir.c_str(), 0) == -1)
             {
@@ -3633,7 +3425,7 @@ void FtpUtil::GetHrObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
                     string sHh = str.hh2str(fopt->hhObs[i]);
                     char tmpDir[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                    sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                     string sHhDir = tmpDir;
                     if (access(sHhDir.c_str(), 0) == -1)
                     {
@@ -3748,25 +3540,9 @@ void FtpUtil::GetHrObsGa(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::Get30sObsHk(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "30s");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -3819,7 +3595,7 @@ void FtpUtil::Get30sObsHk(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 
                 char tmpFile[MAXSTRPATH] = { '\0' };
                 char sep = (char)FILEPATHSEP;
-                sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                 string localFile = tmpFile;
                 if (access(crxFile.c_str(), 0) == -1)
                 {
@@ -3875,27 +3651,11 @@ void FtpUtil::Get30sObsHk(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::Get5sObsHk(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "5s");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
-    chdir(subDir.c_str());
+    chdir(dir);
 #endif
 
     /* compute day of year */
@@ -3933,7 +3693,7 @@ void FtpUtil::Get5sObsHk(gtime_t ts, const char dir[], const ftpopt_t *fopt)
                 string sHh = str.hh2str(fopt->hhObs[i]);
                 char tmpDir[MAXSTRPATH] = { '\0' };
                 char sep = (char)FILEPATHSEP;
-                sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                 string sHhDir = tmpDir;
                 if (access(sHhDir.c_str(), 0) == -1)
                 {
@@ -4033,25 +3793,9 @@ void FtpUtil::Get5sObsHk(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::Get1sObsHk(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "1s");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -4091,7 +3835,7 @@ void FtpUtil::Get1sObsHk(gtime_t ts, const char dir[], const ftpopt_t *fopt)
                 string sHh = str.hh2str(fopt->hhObs[i]);
                 char tmpDir[MAXSTRPATH] = { '\0' };
                 char sep = (char)FILEPATHSEP;
-                sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                 string sHhDir = tmpDir;
                 if (access(sHhDir.c_str(), 0) == -1)
                 {
@@ -4191,25 +3935,9 @@ void FtpUtil::Get1sObsHk(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetDailyObsNgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -4260,7 +3988,7 @@ void FtpUtil::GetDailyObsNgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 
                 char tmpFile[MAXSTRPATH] = { '\0' };
                 char sep = (char)FILEPATHSEP;
-                sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                 string localFile = tmpFile;
                 if (access(dFile.c_str(), 0) == -1)
                 {
@@ -4316,25 +4044,9 @@ void FtpUtil::GetDailyObsNgs(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetDailyObsEpn(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -4363,7 +4075,7 @@ void FtpUtil::GetDailyObsEpn(gtime_t ts, const char dir[], const ftpopt_t *fopt)
         /* get the file list */
         string suffix = ".crx";
         vector<string> crxFiles;
-        str.GetFilesAll(subDir, suffix, crxFiles);
+        str.GetFilesAll(dir, suffix, crxFiles);
         char sitName[MAXCHARS];
         for (int i = 0; i < crxFiles.size(); i++)
         {
@@ -4443,7 +4155,7 @@ void FtpUtil::GetDailyObsEpn(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 
                     char tmpFile[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                    sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                     string localFile = tmpFile;
                     if (access(dFile.c_str(), 0) == -1)
                     {
@@ -4500,29 +4212,6 @@ void FtpUtil::GetDailyObsEpn(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 **/
 void FtpUtil::GetDailyObsPbo2(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
-    /* change directory */
-#ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
-#else           /* for Linux or Mac */
-    chdir(subDir.c_str());
-#endif
-
     /* compute day of year */
     TimeUtil tu;
     int yyyy, doy;
@@ -4547,7 +4236,7 @@ void FtpUtil::GetDailyObsPbo2(gtime_t ts, const char dir[], const ftpopt_t *fopt
         /* get the file list */
         string suffix = "." + sYy + "d";
         vector<string> dFiles;
-        str.GetFilesAll(subDir, suffix, dFiles);
+        str.GetFilesAll(dir, suffix, dFiles);
         char sitName[MAXCHARS];
         for (int i = 0; i < dFiles.size(); i++)
         {
@@ -4641,7 +4330,7 @@ void FtpUtil::GetDailyObsPbo2(gtime_t ts, const char dir[], const ftpopt_t *fopt
 
                     char tmpFile[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                    sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                     string localFile = tmpFile;
                     if (access(dFile.c_str(), 0) == -1)
                     {
@@ -4700,25 +4389,9 @@ void FtpUtil::GetDailyObsPbo2(gtime_t ts, const char dir[], const ftpopt_t *fopt
 **/
 void FtpUtil::GetDailyObsPbo3(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -4747,7 +4420,7 @@ void FtpUtil::GetDailyObsPbo3(gtime_t ts, const char dir[], const ftpopt_t *fopt
         /* get the file list */
         string suffix = ".crx";
         vector<string> crxFiles;
-        str.GetFilesAll(subDir, suffix, crxFiles);
+        str.GetFilesAll(dir, suffix, crxFiles);
         char sitName[MAXCHARS];
         for (int i = 0; i < crxFiles.size(); i++)
         {
@@ -4830,7 +4503,7 @@ void FtpUtil::GetDailyObsPbo3(gtime_t ts, const char dir[], const ftpopt_t *fopt
 
                     char tmpFile[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                    sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                     string localFile = tmpFile;
                     if (access(dFile.c_str(), 0) == -1)
                     {
@@ -4901,25 +4574,9 @@ void FtpUtil::GetDailyObsPbo3(gtime_t ts, const char dir[], const ftpopt_t *fopt
 **/
 void FtpUtil::GetDailyObsPbo5(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 {
-    /* creation of sub-directory ('daily') */
-    char tmpDir[MAXSTRPATH] = { '\0' };
-    char sep = (char)FILEPATHSEP;
-    sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-    string subDir = tmpDir;
-    if (access(subDir.c_str(), 0) == -1)
-    {
-        /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-        string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-        string cmd = "mkdir -p " + subDir;
-#endif
-        std::system(cmd.c_str());
-    }
-
     /* change directory */
 #ifdef _WIN32   /* for Windows */
-    _chdir(subDir.c_str());
+    _chdir(dir);
 #else           /* for Linux or Mac */
     chdir(subDir.c_str());
 #endif
@@ -4948,7 +4605,7 @@ void FtpUtil::GetDailyObsPbo5(gtime_t ts, const char dir[], const ftpopt_t *fopt
         /* get the file list */
         string suffix = ".crx";
         vector<string> crxFiles;
-        str.GetFilesAll(subDir, suffix, crxFiles);
+        str.GetFilesAll(dir, suffix, crxFiles);
         char sitName[MAXCHARS];
         for (int i = 0; i < crxFiles.size(); i++)
         {
@@ -4994,7 +4651,7 @@ void FtpUtil::GetDailyObsPbo5(gtime_t ts, const char dir[], const ftpopt_t *fopt
         /* get the file list */
         suffix = "." + sYy + "d";
         vector<string> dFiles;
-        str.GetFilesAll(subDir, suffix, dFiles);
+        str.GetFilesAll(dir, suffix, dFiles);
         for (int i = 0; i < dFiles.size(); i++)
         {
             if (access(dFiles[i].c_str(), 0) == 0)
@@ -5087,7 +4744,7 @@ void FtpUtil::GetDailyObsPbo5(gtime_t ts, const char dir[], const ftpopt_t *fopt
 
                     char tmpFile[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, oFile.c_str());
+                    sprintf(tmpFile, "%s%c%s", dir, sep, oFile.c_str());
                     string localFile = tmpFile;
                     if (access(dFile.c_str(), 0) == -1)
                     {
@@ -5212,25 +4869,10 @@ void FtpUtil::GetNav(gtime_t ts, const char dir[], const ftpopt_t *fopt)
     str.ToUpper(navAc);
     if (nTyp == "daily")
     {
-        /* creation of sub-directory ('daily') */
-        char tmpDir[MAXSTRPATH] = { '\0' };
-        char sep = (char)FILEPATHSEP;
-        sprintf(tmpDir, "%s%c%s", dir, sep, "daily");
-        string subDir = tmpDir;
-        if (access(subDir.c_str(), 0) == -1)
-        {
-            /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-            string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-            string cmd = "mkdir -p " + subDir;
-#endif
-            std::system(cmd.c_str());
-        }
 
         /* change directory */
 #ifdef _WIN32   /* for Windows */
-        _chdir(subDir.c_str());
+        _chdir(dir);
 #else           /* for Linux or Mac */
         chdir(subDir.c_str());
 #endif
@@ -5349,7 +4991,7 @@ void FtpUtil::GetNav(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 
             char tmpFile[MAXSTRPATH] = { '\0' };
             char sep = (char)FILEPATHSEP;
-            sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, navFile.c_str());
+            sprintf(tmpFile, "%s%c%s", dir, sep, navFile.c_str());
             string localFile = tmpFile;
             if (access(navFile.c_str(), 0) == -1)
             {
@@ -5388,22 +5030,6 @@ void FtpUtil::GetNav(gtime_t ts, const char dir[], const ftpopt_t *fopt)
     }
     else if (nTyp == "hourly")
     {
-        /* creation of sub-directory ('hourly') */
-        char tmpDir[MAXSTRPATH] = { '\0' };
-        char sep = (char)FILEPATHSEP;
-        sprintf(tmpDir, "%s%c%s", dir, sep, "hourly");
-        string subDir = tmpDir;
-        if (access(subDir.c_str(), 0) == -1)
-        {
-            /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-            string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-            string cmd = "mkdir -p " + subDir;
-#endif
-            std::system(cmd.c_str());
-        }
-
         string sitFile = fopt->navLst;
         /* download the broadcast ephemeris file site-by-site */
         if (access(sitFile.c_str(), 0) == 0)
@@ -5427,7 +5053,7 @@ void FtpUtil::GetNav(gtime_t ts, const char dir[], const ftpopt_t *fopt)
                     string sHh = str.hh2str(fopt->hhNav[i]);
                     char tmpDir[MAXSTRPATH] = { '\0' };
                     char sep = (char)FILEPATHSEP;
-                    sprintf(tmpDir, "%s%c%s", subDir.c_str(), sep, sHh.c_str());
+                    sprintf(tmpDir, "%s%c%s", dir, sep, sHh.c_str());
                     string sHhDir = tmpDir;
                     if (access(sHhDir.c_str(), 0) == -1)
                     {
@@ -7919,29 +7545,10 @@ void FtpUtil::GetIono(gtime_t ts, const char dir[], const ftpopt_t *fopt)
             isFinal = true;
         }
 
-        string subDir = dir;
-        if (isRapid || isFinal)
-        {
-            /* creation of sub-directory ('daily') */
-            char tmpDir[MAXSTRPATH] = { '\0' };
-            char sep = (char)FILEPATHSEP;
-            if (isRapid) sprintf(tmpDir, "%s%c%s", dir, sep, "rapid");
-            else sprintf(tmpDir, "%s%c%s", dir, sep, "final");
-            subDir = tmpDir;
-            if (access(subDir.c_str(), 0) == -1)
-            {
-                /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-                string cmd = "mkdir " + subDir;
-#else           /* for Linux or Mac */
-                string cmd = "mkdir -p " + subDir;
-#endif
-                std::system(cmd.c_str());
-            }  
-        }
+
         /* change directory */
 #ifdef _WIN32   /* for Windows */
-        _chdir(subDir.c_str());
+        _chdir(dir);
 #else           /* for Linux or Mac */
         chdir(subDir.c_str());
 #endif
@@ -7986,7 +7593,7 @@ void FtpUtil::GetIono(gtime_t ts, const char dir[], const ftpopt_t *fopt)
 
                 char tmpFile[MAXSTRPATH] = { '\0' };
                 char sep = (char)FILEPATHSEP;
-                sprintf(tmpFile, "%s%c%s", subDir.c_str(), sep, ionFile.c_str());
+                sprintf(tmpFile, "%s%c%s", dir, sep, ionFile.c_str());
                 string localFile = tmpFile;
                 if (access(ionFile.c_str(), 0) == 0)
                 {
@@ -8433,6 +8040,34 @@ void FtpUtil::GetAntexIGS(gtime_t ts, const char dir[], const ftpopt_t *fopt)
         }
     }
     else cout << "*** INFO(FtpUtil::GetAntexIGS): IGS ANTEX file " << atxFile << " has existed!" << endl;
+
+
+    atxFile = "igs20.atx";
+    if (access(atxFile.c_str(), 0) == -1)
+    {
+        string wgetFull = fopt->wgetFull, qr = fopt->qr;
+        string url = "https://files.igs.org/pub/station/general/" + atxFile;
+        string cmd = wgetFull + " " + qr + " -nH --cut-dirs=3 " + url;
+        std::system(cmd.c_str());
+
+        char tmpFile[MAXSTRPATH] = { '\0' };
+        char sep = (char)FILEPATHSEP;
+        sprintf(tmpFile, "%s%c%s", dir, sep, atxFile.c_str());
+        string localFile = tmpFile;
+        if (access(atxFile.c_str(), 0) == 0)
+        {
+            cout << "*** INFO(FtpUtil::GetAntexIGS): successfully download IGS ANTEX file " << atxFile << endl;
+
+            if (fopt->fpLog) fprintf(fopt->fpLog, "* INFO(GetAntexIGS): %s  ->  %s  OK\n", url.c_str(), localFile.c_str());
+        }
+        else
+        {
+            cout << "*** WARNING(FtpUtil::GetAntexIGS): failed to download IGS ANTEX file " << atxFile << endl;
+
+            if (fopt->fpLog) fprintf(fopt->fpLog, "* WARNING(GetAntexIGS): %s  ->  %s  OK\n", url.c_str(), localFile.c_str());
+        }
+    }
+    else cout << "*** INFO(FtpUtil::GetAntexIGS): IGS ANTEX file " << atxFile << " has existed!" << endl;
 } /* end of GetAntexIGS */
 
 /**
@@ -8513,20 +8148,6 @@ void FtpUtil::FtpDownload(const prcopt_t *popt, ftpopt_t *fopt)
                 str.ToUpper(obsuFrom);
                 /* creation of sub-directory */
                 string subObsDir = popt->obsDir;
-                char tmpDir[MAXSTRPATH] = { '\0' };
-                char sep = (char)FILEPATHSEP;
-                sprintf(tmpDir, "%s%c%s", popt->obsDir, sep, obsuFrom.c_str());
-                subObsDir = tmpDir;
-                if (access(subObsDir.c_str(), 0) == -1)
-                {
-                    /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-                    string cmd = "mkdir " + subObsDir;
-#else           /* for Linux or Mac */
-                    string cmd = "mkdir -p " + subObsDir;
-#endif
-                    std::system(cmd.c_str());
-                }
 
                 if (obsFrom == "igs")       /* IGS observation (RINEX version 2.xx, short name "d") */
                 {
@@ -8738,60 +8359,8 @@ void FtpUtil::FtpDownload(const prcopt_t *popt, ftpopt_t *fopt)
 
             /* creation of sub-directory */
             string subOrbDir = popt->orbDir;
-            string subClkDir = popt->clkDir;
-            char tmpDir[MAXSTRPATH] = { '\0' };
-            char sep = (char)FILEPATHSEP;
-            if (prodType == PROD_REALTIME)
-            {
-                sprintf(tmpDir, "%s%c%s", popt->orbDir, sep, "real_time");
-                subOrbDir = tmpDir;
-                sprintf(tmpDir, "%s%c%s", popt->clkDir, sep, "real_time");
-                subClkDir = tmpDir;
-            }
-            else if (prodType == PROD_ULTRA_RAPID)
-            {
-                sprintf(tmpDir, "%s%c%s", popt->orbDir, sep, "ultra_rapid");
-                subOrbDir = tmpDir;
-            }
-            else if (prodType == PROD_RAPID)
-            {
-                sprintf(tmpDir, "%s%c%s", popt->orbDir, sep, "rapid");
-                subOrbDir = tmpDir;
-                sprintf(tmpDir, "%s%c%s", popt->clkDir, sep, "rapid");
-                subClkDir = tmpDir;
-            }
-            else if (prodType == PROD_FINAL_IGS || prodType == PROD_FINAL_MGEX)
-            {
-                sprintf(tmpDir, "%s%c%s", popt->orbDir, sep, "final");
-                subOrbDir = tmpDir;
-                sprintf(tmpDir, "%s%c%s", popt->clkDir, sep, "final");
-                subClkDir = tmpDir;
-            }
-            /* for orb at a specified day */
-            if (access(subOrbDir.c_str(), 0) == -1)
-            {
-                /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-                string cmd = "mkdir " + subOrbDir;
-#else           /* for Linux or Mac */
-                string cmd = "mkdir -p " + subOrbDir;
-#endif
-                std::system(cmd.c_str());
-            }
-            /* for clk at a specified day */
-            if (prodType > 0 && prodType != PROD_ULTRA_RAPID)
-            {
-                if (access(subClkDir.c_str(), 0) == -1)
-                {
-                    /* If the directory does not exist, creat it */
-#ifdef _WIN32   /* for Windows */
-                    string cmd = "mkdir " + subClkDir;
-#else           /* for Linux or Mac */
-                    string cmd = "mkdir -p " + subClkDir;
-#endif
-                    std::system(cmd.c_str());
-                }
-            }
+            string subClkDir = popt->orbDir;
+
             std::vector<string> subDirs = { subOrbDir, subClkDir };
             GetOrbClk(popt->ts, subDirs, prodType, ac_i, fopt);
 
