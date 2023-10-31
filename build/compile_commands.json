@@ -1,0 +1,27 @@
+[
+{
+  "directory": "C:/Users/xWillis/Desktop/GOOD_Fusing/build",
+  "command": "D:/msys64/mingw64/bin/g++.exe -DYAML_CPP_STATIC_DEFINE @CMakeFiles/run_GOOD.dir/includes_CXX.rsp  -Wall -g   -w -std=gnu++14 -o CMakeFiles/run_GOOD.dir/GOOD_src/FtpUtil.cpp.obj -c C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/FtpUtil.cpp",
+  "file": "C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/FtpUtil.cpp"
+},
+{
+  "directory": "C:/Users/xWillis/Desktop/GOOD_Fusing/build",
+  "command": "D:/msys64/mingw64/bin/g++.exe -DYAML_CPP_STATIC_DEFINE @CMakeFiles/run_GOOD.dir/includes_CXX.rsp  -Wall -g   -w -std=gnu++14 -o CMakeFiles/run_GOOD.dir/GOOD_src/PreProcess.cpp.obj -c C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/PreProcess.cpp",
+  "file": "C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/PreProcess.cpp"
+},
+{
+  "directory": "C:/Users/xWillis/Desktop/GOOD_Fusing/build",
+  "command": "D:/msys64/mingw64/bin/g++.exe -DYAML_CPP_STATIC_DEFINE @CMakeFiles/run_GOOD.dir/includes_CXX.rsp  -Wall -g   -w -std=gnu++14 -o CMakeFiles/run_GOOD.dir/GOOD_src/StringUtil.cpp.obj -c C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/StringUtil.cpp",
+  "file": "C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/StringUtil.cpp"
+},
+{
+  "directory": "C:/Users/xWillis/Desktop/GOOD_Fusing/build",
+  "command": "D:/msys64/mingw64/bin/g++.exe -DYAML_CPP_STATIC_DEFINE @CMakeFiles/run_GOOD.dir/includes_CXX.rsp  -Wall -g   -w -std=gnu++14 -o CMakeFiles/run_GOOD.dir/GOOD_src/TimeUtil.cpp.obj -c C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/TimeUtil.cpp",
+  "file": "C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/TimeUtil.cpp"
+},
+{
+  "directory": "C:/Users/xWillis/Desktop/GOOD_Fusing/build",
+  "command": "D:/msys64/mingw64/bin/g++.exe -DYAML_CPP_STATIC_DEFINE @CMakeFiles/run_GOOD.dir/includes_CXX.rsp  -Wall -g   -w -std=gnu++14 -o CMakeFiles/run_GOOD.dir/GOOD_src/run_GOOD.cpp.obj -c C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/run_GOOD.cpp",
+  "file": "C:/Users/xWillis/Desktop/GOOD_Fusing/GOOD_src/run_GOOD.cpp"
+}
+]
